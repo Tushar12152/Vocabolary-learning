@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router"; // Use react-router-dom for navigation
 import { imageUpload } from "Hooks/imageUpload"; // Ensure this hook is correctly implemented and imported
+import useAxiosSecure from "Hooks/useAxiosSecure";
+import toast from "react-hot-toast";
 
 const Register = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-
+ const axiosSecure=useAxiosSecure()
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -16,9 +18,10 @@ const Register = () => {
     e.preventDefault();
 
     const form = e.currentTarget;
-    const name = form.name.value;
+    
     const email = form.email.value;
     const password = form.password.value;
+    const name = form.name.value;
     const imageFile = form.image.files[0];
 
     if (imageFile) {
@@ -28,8 +31,13 @@ const Register = () => {
 
    const user= {Name:name, Email:email, Password:password, Photo:photo}
 
+   const result= await axiosSecure.post('/users',user)
+   if(result?.data?.insertedId){
+        toast.success('Registration complete.......')
+   }
 
-        console.log(user);
+
+        // console.log(user);
       } catch (error) {
         console.error("Image upload failed:", error);
       }

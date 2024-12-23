@@ -7,6 +7,17 @@ import toast from "react-hot-toast";
 const Register = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
  const axiosSecure=useAxiosSecure()
+
+
+ const { data: users = [] } = useQuery({
+  queryKey: ["user"],
+  queryFn: async () => {
+    const res = await axiosSecure.get(`/users`);
+    return res.data;
+  },
+});
+
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -115,7 +126,7 @@ const Register = () => {
 
           <p className="mb-4">
             Already have an account?{" "}
-            <Link to="/login" className="text-red-500 hover:underline">
+            <Link to="/" className="text-red-500 hover:underline">
               Login
             </Link>
           </p>

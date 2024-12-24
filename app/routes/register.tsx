@@ -19,7 +19,7 @@ const Register = () => {
   });
 
 
-  console.log('users from db', users)
+
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -55,7 +55,7 @@ const Register = () => {
             toast.success('Registration complete.......')
           }
         } else{
-          toast.error('this email already used')
+          toast.error('This email already used, please try with another email..')
         }
 
 

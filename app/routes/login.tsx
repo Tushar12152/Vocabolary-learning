@@ -1,14 +1,46 @@
-import { Link } from "react-router";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosSecure from "Hooks/useAxiosSecure";
+
+import toast from "react-hot-toast";
+import { Link, useNavigate } from "react-router";
 
 
 const Login = () => {
+
+  const navigate=useNavigate
+  const axiosSecure = useAxiosSecure()
+
+
+  const { data: users = [] } = useQuery({
+    queryKey: ["user"],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/users`);
+      return res.data;
+    },
+  });
+
+
+  console.log('users from db', users)
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Corrected typo
 
     const email = e.currentTarget.email.value; // Access email field
     const password = e.currentTarget.password.value; // Access password field
     console.log("Email:", email, "Password:", password);
+
+    const match = users.find((user: any) => user?.Email === email);
+
+    if (match?.Email === email && match?.Password === password) {
+
+      toast.success('logged in....')
+      
+    }
+
   };
+
+
+
 
   return (
     <div>

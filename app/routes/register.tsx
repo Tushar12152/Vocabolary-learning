@@ -3,20 +3,23 @@ import { Link } from "react-router"; // Use react-router-dom for navigation
 import { imageUpload } from "Hooks/imageUpload"; // Ensure this hook is correctly implemented and imported
 import useAxiosSecure from "Hooks/useAxiosSecure";
 import toast from "react-hot-toast";
+import { useQuery } from "@tanstack/react-query";
 
 const Register = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
- const axiosSecure=useAxiosSecure()
+  const axiosSecure = useAxiosSecure()
 
 
- const { data: users = [] } = useQuery({
-  queryKey: ["user"],
-  queryFn: async () => {
-    const res = await axiosSecure.get(`/users`);
-    return res.data;
-  },
-});
+  const { data: users = [] } = useQuery({
+    queryKey: ["user"],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/users`);
+      return res.data;
+    },
+  });
 
+
+  console.log('users from db', users)
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -29,7 +32,7 @@ const Register = () => {
     e.preventDefault();
 
     const form = e.currentTarget;
-    
+
     const email = form.email.value;
     const password = form.password.value;
     const name = form.name.value;
@@ -40,12 +43,21 @@ const Register = () => {
         const img = await imageUpload(imageFile);
         const photo = img?.data?.display_url;
 
-   const user= {Name:name, Email:email, Password:password, Photo:photo}
+        const user = { Name: name, Email: email, Password: password, Photo: photo }
 
-   const result= await axiosSecure.post('/users',user)
-   if(result?.data?.insertedId){
-        toast.success('Registration complete.......')
-   }
+        const duplicate = users.find((user: any) => user?.Email === email);
+
+        console.log(duplicate)
+
+        if (!duplicate) {
+          const result = await axiosSecure.post('/users', user)
+          if (result?.data?.insertedId) {
+            toast.success('Registration complete.......')
+          }
+        } else{
+          toast.error('this email already used')
+        }
+
 
 
         // console.log(user);

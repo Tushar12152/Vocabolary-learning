@@ -7,10 +7,10 @@ import { Link, useNavigate } from "react-router";
 
 const Login = () => {
 
-  const navigate=useNavigate
+  const navigate=useNavigate()
   const axiosSecure = useAxiosSecure()
 
-
+ 
   const { data: users = [] } = useQuery({
     queryKey: ["user"],
     queryFn: async () => {
@@ -32,9 +32,11 @@ const Login = () => {
     const match = users.find((user: any) => user?.Email === email);
 
     if (match?.Email === email && match?.Password === password) {
-
+      navigate("/dashboard");
       toast.success('logged in....')
       
+    } else{
+      toast.error('invalid password and email')
     }
 
   };

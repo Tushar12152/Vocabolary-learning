@@ -4,10 +4,13 @@ import { imageUpload } from "Hooks/imageUpload"; // Ensure this hook is correctl
 import useAxiosSecure from "Hooks/useAxiosSecure";
 import toast from "react-hot-toast";
 import { useQuery } from "@tanstack/react-query";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+
 
 const Register = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const axiosSecure = useAxiosSecure()
+  const [show,setShow]=useState(true)
 
 
   const { data: users = [] } = useQuery({
@@ -123,17 +126,20 @@ const Register = () => {
             )}
           </div>
 
-          <div className="form-control mb-4">
+          <div className="form-control mb-4 relative">
             <label className="label">
               <span className="label-text">Password</span>
             </label>
             <input
               name="password"
-              type="password"
+              type={show? "password":'text'}
               placeholder="Password"
               className="input input-bordered"
               required
             />
+      
+            <span onClick={()=>setShow(!show)} className="absolute mt-12 ml-60"> {show? <FaEye />: <FaEyeSlash/>} </span>
+
           </div>
 
           <p className="mb-4">

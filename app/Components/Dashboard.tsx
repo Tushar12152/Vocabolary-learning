@@ -1,7 +1,21 @@
+import toast from "react-hot-toast";
 import { FaHome, FaSignOutAlt } from "react-icons/fa";
-import { NavLink, Outlet } from "react-router";
+import { Navigate, NavLink, Outlet, useNavigate } from "react-router";
+import ProtectRouter from "./ProtectRouter";
 
 const Dashboard = () => {
+    // const navigate=useNavigate()
+
+    const handleLogout = () => {
+        // Remove the current user from localStorage
+        localStorage.removeItem("currentUser");
+      
+        // Optionally, redirect to the login page or any other page
+        // <Navigate to='/' />
+        toast.success("Logged out successfully!");
+      };
+
+
     return (
         <div>
              <div className="grid grid-cols-12 h-full ">
@@ -24,7 +38,7 @@ const Dashboard = () => {
                             Home</NavLink>
                     </li>
                     <li >
-                        <NavLink to='' >
+                        <NavLink onClick={handleLogout} to='' >
                             <FaSignOutAlt/>
                             Log Out</NavLink>
                     </li>
@@ -40,4 +54,10 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default function ProtectedDashboard() {
+    return (
+      <ProtectRouter>
+        <Dashboard />
+      </ProtectRouter>
+    );
+  }

@@ -32,6 +32,9 @@ const Login = () => {
     const match = users.find((user: any) => user?.Email === email);
 
     if (match?.Email === email && match?.Password === password) {
+      
+      localStorage.setItem("currentUser", JSON.stringify(match));
+
       navigate("/dashboard");
       toast.success('logged in....')
       

@@ -10,7 +10,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 const Register = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const axiosSecure = useAxiosSecure()
-  const [show,setShow]=useState(true)
+  const [show, setShow] = useState(true)
 
 
   const { data: users = [] } = useQuery({
@@ -38,7 +38,8 @@ const Register = () => {
 
     const email = form.email.value;
     const password = form.password.value;
-    const name = form.name.value;
+    const name = (form.elements.namedItem("name") as HTMLInputElement).value;
+
     const imageFile = form.image.files[0];
 
     if (imageFile) {
@@ -46,7 +47,7 @@ const Register = () => {
         const img = await imageUpload(imageFile);
         const photo = img?.data?.display_url;
 
-        const user = { Name: name, Email: email, Password: password, Photo: photo }
+        const user = { Name: name, Email: email, Password: password, Photo: photo, Role:'user' }
 
         const duplicate = users.find((user: any) => user?.Email === email);
 
@@ -57,7 +58,7 @@ const Register = () => {
           if (result?.data?.insertedId) {
             toast.success('Registration complete.......')
           }
-        } else{
+        } else {
           toast.error('This email already used, please try with another email..')
         }
 
@@ -103,6 +104,7 @@ const Register = () => {
               required
             />
           </div>
+        
 
           <div className="form-control mb-4">
             <label className="label">
@@ -132,13 +134,13 @@ const Register = () => {
             </label>
             <input
               name="password"
-              type={show? "password":'text'}
+              type={show ? "password" : 'text'}
               placeholder="Password"
               className="input input-bordered"
               required
             />
-      
-            <span onClick={()=>setShow(!show)} className="absolute mt-12 ml-60"> {show? <FaEye />: <FaEyeSlash/>} </span>
+
+            <span onClick={() => setShow(!show)} className="absolute mt-12 ml-60"> {show ? <FaEye /> : <FaEyeSlash />} </span>
 
           </div>
 

@@ -20,7 +20,7 @@ const Login = () => {
   });
 
 
-  console.log('users from db', users)
+  // console.log('users from db', users)
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Corrected typo
@@ -31,11 +31,12 @@ const Login = () => {
 
     const match = users.find((user: any) => user?.Email === email);
 
+      console.log('k',match?.Role)
     if (match?.Email === email && match?.Password === password) {
       
       localStorage.setItem("currentUser", JSON.stringify(match));
 
-      navigate("/dashboard");
+      match?.Role==='admin'? navigate("/dashboard"): navigate("/home");
       toast.success('logged in....')
       
     } else{

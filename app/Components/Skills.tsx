@@ -5,7 +5,7 @@ import { TfiWand } from "react-icons/tfi";
 
 const Skills = () => {
     return (
-        <div className='bg-gray-200 py-20'>
+        <div className='bg-gray-100 py-20'>
             <div className='w-[80%] flex items-center justify-between mx-auto'>
                 <div className='w-[50%]'>
                     <img className='' src={skill} alt="" />
@@ -35,7 +35,7 @@ const Skills = () => {
                         <div className='flex items-center  gap-6 justify-center border border-gray-400 p-10 rounded-lg mt-4 hover:border-l-4 duration-500 hover:border-l-green-500'>
                             <div className="">
                                 <span className="inline-flex items-center p-5 justify-center w-20 h-20 bg-green-200 text-black rounded-full">
-                                    <TfiWand  className="text-3xl text-green-500" />
+                                    <TfiWand className="text-3xl text-green-500" />
                                 </span>
                             </div>
                             <div className=''>
@@ -44,7 +44,9 @@ const Skills = () => {
                             </div>
                         </div>
 
-
+                        <button className="mt-10 items-center rounded-full gap-2 p-4 px-5 text-white bg-green-500  border border-transparent transition duration-700 ease-in-out hover:bg-blue-900  hover:border-green-500 hover:rounded-full">
+                            Discover More
+                        </button>
 
                     </div>
                 </div>

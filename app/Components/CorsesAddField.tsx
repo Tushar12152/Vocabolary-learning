@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import useAxiosSecure from 'Hooks/useAxiosSecure';
+import toast from 'react-hot-toast';
 
 interface CourseData {
   title: string;
@@ -54,7 +55,7 @@ const CoursesAddField: React.FC = () => {
     const formData = new FormData();
     formData.append('image', image);
     const { data } = await axios.post(
-      'https://api.imgbb.com/1/upload?key=YOUR_IMGBB_API_KEY',
+      'https://api.imgbb.com/1/upload?key=400a20a4420cbd865f5a97bb6cd5db43',
       formData
     );
     return data.data.url;
@@ -81,7 +82,10 @@ const CoursesAddField: React.FC = () => {
       console.log('Course Data:', completeCourseData);
       // Replace with your backend API endpoint
       const result = await axiosSecure.post('/courses', completeCourseData);
-      console.log(result);
+      if(result?.data){
+        toast.success('Successfully added course')
+      }
+      
     } catch (error) {
       setUploadStatus('Image upload failed. Please try again.');
       console.error('Error uploading image:', error);

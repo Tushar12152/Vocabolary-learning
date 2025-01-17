@@ -39,7 +39,7 @@ const Dashboard = () => {
           <div className="mt-20 text-black  menu">
             <hr />
             <li >
-              <NavLink to="/">
+              <NavLink to="/home">
                 <FaHome />
                 Home</NavLink>
             </li>

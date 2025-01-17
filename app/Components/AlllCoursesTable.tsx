@@ -68,10 +68,10 @@ const AllCoursesTable = () => {
                         </thead>
                         <tbody>
                             {
-                                courses.map(course => (<tr key={course?._id}>
+                                courses.map(course => (<tr className='shadow-2xl' key={course?._id}>
 
-                                    <td>
-                                        <div className="flex items-center gap-3">
+                                    <td className=''>
+                                        <div className="flex items-center gap-3 ">
                                             <div className="avatar">
                                                 <div className="mask mask-squircle h-12 w-12">
                                                     <img

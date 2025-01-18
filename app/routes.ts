@@ -9,6 +9,7 @@ export default [index("routes/login.tsx"),
                     
                 ]),
                 route('/home','routes/home.tsx'),
+                route('/courses','routes/courses.tsx'),
                      
             
             ] satisfies RouteConfig;

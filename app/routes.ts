@@ -8,8 +8,13 @@ export default [index("routes/login.tsx"),
                     route('/dashboard/all-courses','routes/allCourses.tsx'),
                     
                 ]),
-                route('/home','routes/home.tsx'),
+
+                route('/','routes/layout.tsx',[ 
+                    route('/home','routes/home.tsx'),
                 route('/courses','routes/courses.tsx'),
+                    
+                ]),
+               
                      
             
             ] satisfies RouteConfig;

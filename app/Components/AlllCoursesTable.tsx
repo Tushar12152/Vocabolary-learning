@@ -68,7 +68,7 @@ const AllCoursesTable = () => {
                         </thead>
                         <tbody>
                             {
-                                courses.map(course => (<tr className='shadow-2xl' key={course?._id}>
+                                courses.map((course:any) => (<tr className='shadow-2xl' key={course?._id}>
 
                                     <td className=''>
                                         <div className="flex items-center gap-3 ">

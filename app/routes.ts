@@ -6,6 +6,7 @@ export default [index("routes/login.tsx"),
                 route('/dashboard','routes/dashboard.tsx',[ 
                     route('/dashboard/add-courses','routes/addCources.tsx'),
                     route('/dashboard/all-courses','routes/allCourses.tsx'),
+                    route('/dashboard/all-users','routes/allUsers.tsx'),
                     
                 ]),
 

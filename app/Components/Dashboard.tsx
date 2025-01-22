@@ -33,6 +33,11 @@ const Dashboard = () => {
             <MdNoteAdd />
               All Courses</NavLink>
           </li>
+          <li >
+            <NavLink to="/dashboard/all-users">
+            <MdNoteAdd />
+              All Users</NavLink>
+          </li>
 
 
 

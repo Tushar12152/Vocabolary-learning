@@ -11,6 +11,7 @@ const Register = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const axiosSecure = useAxiosSecure()
   const [show, setShow] = useState(true)
+  const [Loading, setLoading] = useState(false)
 
 
   const { data: users = [] } = useQuery({
@@ -34,6 +35,7 @@ const Register = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    setLoading(true)
     const form = e.currentTarget;
 
     const email = form.email.value;
@@ -57,9 +59,11 @@ const Register = () => {
           const result = await axiosSecure.post('/users', user)
           if (result?.data?.insertedId) {
             toast.success('Registration complete.......')
+            setLoading(false)
           }
         } else {
           toast.error('This email already used, please try with another email..')
+          setLoading(false)
         }
 
 
@@ -153,7 +157,7 @@ const Register = () => {
 
           <div className="form-control mt-6">
             <button type="submit" className="btn bg-green-500 text-white">
-              Sign Up
+             {Loading?"...":'Sign Up'} 
             </button>
           </div>
         </form>

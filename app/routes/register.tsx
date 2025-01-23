@@ -157,7 +157,7 @@ const Register = () => {
 
           <div className="form-control mt-6">
             <button type="submit" className="btn bg-green-500 text-white">
-             {Loading?"...":'Sign Up'} 
+             {Loading?<span className="loading loading-dots loading-xs"></span>:'Sign Up'} 
             </button>
           </div>
         </form>

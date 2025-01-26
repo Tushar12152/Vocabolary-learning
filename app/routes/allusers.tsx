@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import useAxiosSecure from 'Hooks/useAxiosSecure';
-import React from 'react';
+import React, { useState } from 'react';
 import { MdDelete } from 'react-icons/md';
 
 
@@ -8,6 +9,7 @@ import { MdDelete } from 'react-icons/md';
 const allusers = () => {
 
     const axiosSecure = useAxiosSecure();
+    const [status, setStatus]=useState(true)
 
     const { data: users = [], refetch } = useQuery({
         queryKey: ['user'],
@@ -16,6 +18,25 @@ const allusers = () => {
             return res.data;
         },
     });
+
+    const handleEdit = async (id: any): Promise<void> => {
+        const role = status ? 'admin' : 'user';
+        console.log('Updating role to:', role);
+    
+        try {
+            const res = await axios.patch(`http://localhost:5001/users/${id}`, { role }); // Payload must be an object
+            console.log('Server response:', res.data);
+    
+            if (res.data.modifiedCount > 0) {
+                refetch(); // Refresh user list after a successful update
+                console.log('User role updated successfully.');
+            } else {
+                console.log('No changes made.');
+            }
+        } catch (error) {
+            console.error('Error updating user role:', error);
+        }
+    };
 
     return (
         <div>
@@ -62,8 +83,8 @@ const allusers = () => {
                                         {user?.Email}
                                     </td>
                                     <td>{user?.Password}</td>
-                                    <th>
-                                        <button className=" text-xl "> {user?.Role} </button>
+                                    <th onClick={()=>handleEdit(user?._id)}>
+                                        <button onClick={()=>setStatus(!status)} className=" text-xl "> {user?.Role} </button>
                                     </th>
                                     <th>
                                         <button  className=" text-xl"><MdDelete /></button>

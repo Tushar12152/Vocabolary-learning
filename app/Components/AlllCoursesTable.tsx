@@ -47,62 +47,80 @@ const AllCoursesTable = () => {
 
     }
 
+    
+    const handleUpdate = (id: any) => {
+        console.log(id)
+    }
 
     return (
-        <div className="mt-20">
-            <div>
+        <div className="p-6 bg-gray-100 min-h-screen">
+            <h1 className=" text-gray-800   shadow-lg rounded-lg bg-white max-w-md  text-center font-bold text-3xl border border-green-500 p-2  shadow-black w-72 mx-auto">
+                All Courses
+            </h1>
 
-
-                <div className="overflow-x-auto">
-                    <table className="table">
-                        {/* head */}
-                        <thead>
+            <div className="mt-12">
+                <div className="overflow-x-auto bg-white shadow-md rounded-lg">
+                    <table className="table-auto w-full border-collapse border border-gray-200">
+                        <thead className="bg-gray-100">
                             <tr>
-                                <th>Title</th>
-                                <th>Category</th>
-                                <th>Rting</th>
-                                <th>Update</th>
-                                <th>Delete</th>
-
+                                <th className="px-4 py-2 text-left text-gray-600 font-medium">Title</th>
+                                <th className="px-4 py-2 text-left text-gray-600 font-medium">Category</th>
+                                <th className="px-4 py-2 text-left text-gray-600 font-medium">Rating</th>
+                                <th className="px-4 py-2 text-left text-gray-600 font-medium">Update</th>
+                                <th className="px-4 py-2 text-left text-gray-600 font-medium">Delete</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {
-                                courses.map((course:any) => (<tr className='shadow-2xl' key={course?._id}>
-
-                                    <td className=''>
-                                        <div className="flex items-center gap-3 ">
+                            {courses.map((course: any, index: number) => (
+                                <tr
+                                    key={course?._id}
+                                    className={`${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'
+                                        } hover:bg-gray-100 transition-all`}
+                                >
+                                    <td className="px-4 py-3">
+                                        <div className="flex items-center gap-4">
                                             <div className="avatar">
                                                 <div className="mask mask-squircle h-12 w-12">
                                                     <img
-                                                        src={course?.imageUrl}
-                                                        alt="image cover" />
+                                                        src={course?.imageUrl || 'https://via.placeholder.com/150'}
+                                                        alt={`${course?.title} cover`}
+                                                        className="object-cover rounded-full"
+                                                    />
                                                 </div>
                                             </div>
                                             <div>
-                                                <div className="font-bold">{course?.title}</div>
-
+                                                <p className="text-gray-800 font-semibold">{course?.title}</p>
                                             </div>
                                         </div>
                                     </td>
-                                    <td>
-                                        {course?.categories}
+                                    <td className="px-4 py-3 text-gray-600">{course?.categories}</td>
+                                    <td className="px-4 py-3 text-gray-600">{course?.rating}</td>
+                                    <td className="px-4 py-3">
+                                        <button
+                                            onClick={() => handleUpdate(course._id)}
+                                            className="text-blue-600 hover:text-blue-800 transition"
+                                            title="Update course"
+                                        >
+                                            <MdUpdate className="text-2xl" />
+                                        </button>
                                     </td>
-                                    <td>{course?.rating}</td>
-                                    <th>
-                                        <button className=" text-xl "><MdUpdate /></button>
-                                    </th>
-                                    <th>
-                                        <button onClick={() => handleDelete(course?._id)} className=" text-xl"><MdDelete /></button>
-                                    </th>
-                                </tr>))
-                            }
-
+                                    <td className="px-4 py-3">
+                                        <button
+                                            onClick={() => handleDelete(course._id)}
+                                            className="text-red-600 hover:text-red-800 transition"
+                                            title="Delete course"
+                                        >
+                                            <MdDelete className="text-2xl" />
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+
     );
 };
 

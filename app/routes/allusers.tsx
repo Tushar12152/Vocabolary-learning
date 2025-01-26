@@ -78,6 +78,20 @@ const allusers = () => {
 
     }
 
+    const currentUser = "currentUser";
+    const loginUser: any = localStorage.getItem(currentUser);
+
+
+    const parsedUser = JSON.parse(loginUser);
+    const loginMail= parsedUser.Email;
+
+    const WithOutLoginUser= users. filter((user:any)=> user?.Email!==loginMail)
+
+    console.log('f',WithOutLoginUser)
+
+
+
+
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
             <h1 className="text-center font-bold text-4xl text-gray-800 border border-green-500 p-4 shadow-lg rounded-lg bg-white max-w-md mx-auto">
@@ -97,7 +111,7 @@ const allusers = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {users.map((user: any, index: number) => (
+                            {WithOutLoginUser.map((user: any, index: number) => (
                                 <tr
                                     key={user?._id}
                                     className={`${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'
@@ -128,8 +142,8 @@ const allusers = () => {
                                                 handleEdit(user?._id);
                                             }}
                                             className={`inline-block cursor-pointer rounded-full px-3 py-1 text-sm font-medium ${user?.Role === 'admin'
-                                                    ? 'bg-red-100 text-red-600'
-                                                    : 'bg-blue-100 text-blue-600'
+                                                ? 'bg-red-100 text-red-600'
+                                                : 'bg-blue-100 text-blue-600'
                                                 }`}
                                         >
                                             {user?.Role}

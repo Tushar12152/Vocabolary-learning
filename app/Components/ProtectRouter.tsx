@@ -21,6 +21,7 @@
 
 
 import React from "react";
+import toast from "react-hot-toast";
 import { Navigate } from "react-router";
 
 interface ProtectRouterProps {
@@ -35,14 +36,24 @@ const ProtectRouter: React.FC<ProtectRouterProps> = ({ children }) => {
     currentUser = JSON.parse(localStorage.getItem("currentUser") || "null");
   }
 
-  console.log("Current User:", currentUser);
+  console.log("Current User:", currentUser?.Role);
 
   if (!currentUser) {
     // Redirect to login if no user is logged in
     return <Navigate to="/" replace />;
+
+
+  } else{
+     
+     if( currentUser?.Role==='admin'){
+      return <>{children}</>;
+     } 
+      toast.error('You are not admin')
+     return <Navigate to="/home" replace />;
+    
   }
 
-  return <>{children}</>;
+ 
 };
 
 export default ProtectRouter;

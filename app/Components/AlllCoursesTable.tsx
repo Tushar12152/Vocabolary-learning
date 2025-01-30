@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from 'Hooks/useAxiosSecure';
 import Swal from "sweetalert2";
 import { MdDelete, MdUpdate } from 'react-icons/md';
+import { Link } from 'react-router';
 
 const AllCoursesTable = () => {
     const axiosSecure = useAxiosSecure();
@@ -96,13 +97,13 @@ const AllCoursesTable = () => {
                                     <td className="px-4 py-3 text-gray-600">{course?.categories}</td>
                                     <td className="px-4 py-3 text-gray-600">{course?.rating}</td>
                                     <td className="px-4 py-3">
-                                        <button
-                                            onClick={() => handleUpdate(course._id)}
+                                        <Link to={`/dashboard/updateCourse/${course?._id}`}
+                                            
                                             className="text-blue-600 hover:text-blue-800 transition"
                                             title="Update course"
                                         >
                                             <MdUpdate className="text-2xl" />
-                                        </button>
+                                        </Link>
                                     </td>
                                     <td className="px-4 py-3">
                                         <button

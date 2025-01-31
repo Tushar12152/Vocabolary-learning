@@ -2,6 +2,7 @@ import React from 'react';
 import background from '../../public/Banner1.png';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from 'Hooks/useAxiosSecure';
+import { Link } from 'react-router';
 
 const Courses = () => {
 
@@ -30,7 +31,7 @@ const Courses = () => {
     {/* Courses Grid */}
     <div className="w-[80%] mx-auto mt-28 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
       {courses.map((course: any) => (
-        <div
+        <Link to={`/courseDetails/${course?._id}`}
           key={course?._id}
           className="rounded-xl shadow-lg bg-white hover:shadow-2xl transition duration-300 transform hover:scale-105"
         >
@@ -65,7 +66,7 @@ const Courses = () => {
               Learn More
             </button>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   </div>

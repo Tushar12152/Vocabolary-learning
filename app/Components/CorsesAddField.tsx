@@ -11,9 +11,10 @@ interface CourseData {
   imageUrl: string;
   rating: number;
   courseURL: string;
+  courseSummaryVideo: string; // New field for video link
 }
 
-const CoursesAddField: React.FC = () => {
+const CoursesAddFieldWithSummary: React.FC = () => {
   const [courseData, setCourseData] = useState<Omit<CourseData, 'imageUrl'>>({
     title: '',
     description: '',
@@ -21,14 +22,15 @@ const CoursesAddField: React.FC = () => {
     additionalInfo: '',
     rating: 1,
     courseURL: '',
+    courseSummaryVideo: '', // Initialize new field
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [uploadStatus, setUploadStatus] = useState<string>('');
-  const axiosSecure=useAxiosSecure()
+  const axiosSecure = useAxiosSecure();
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setCourseData((prevData) => ({
@@ -55,7 +57,7 @@ const CoursesAddField: React.FC = () => {
     const formData = new FormData();
     formData.append('image', image);
     const { data } = await axios.post(
-      'https://api.imgbb.com/1/upload?key=400a20a4420cbd865f5a97bb6cd5db43',
+      `https://api.imgbb.com/1/upload?expiration=600&key=400a20a4420cbd865f5a97bb6cd5db43`,
       formData
     );
     return data.data.url;
@@ -82,10 +84,22 @@ const CoursesAddField: React.FC = () => {
       console.log('Course Data:', completeCourseData);
       // Replace with your backend API endpoint
       const result = await axiosSecure.post('/courses', completeCourseData);
-      if(result?.data){
-        toast.success('Successfully added course')
+      if (result?.data) {
+        toast.success('Successfully added course');
+        // Reset form after successful submission
+        setCourseData({
+          title: '',
+          description: '',
+          categories: '',
+          additionalInfo: '',
+          rating: 1,
+          courseURL: '',
+          courseSummaryVideo: '',
+        });
+        setImageFile(null);
+        setImagePreview(null);
+        setUploadStatus('');
       }
-      
     } catch (error) {
       setUploadStatus('Image upload failed. Please try again.');
       console.error('Error uploading image:', error);
@@ -93,135 +107,165 @@ const CoursesAddField: React.FC = () => {
   };
 
   return (
-    <div className=" max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-8">
-    <h2 className="text-3xl font-bold text-center text-gray-800 mb-20  border border-green-500 p-2 shadow-lg shadow-black w-72 mx-auto">Add New Course</h2>
-   
-    <form onSubmit={handleCourse} className="space-y-8">
-      {/* Title and Description */}
-      <div className="flex flex-col sm:flex-row gap-6">
-        <input
-          className="p-4 border border-gray-300 w-full sm:w-1/2 rounded-md focus:ring focus:ring-green-300 focus:outline-none"
-          placeholder="Course Title"
-          type="text"
-          name="title"
-          value={courseData.title}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          className="p-4 border border-gray-300 w-full sm:w-1/2 rounded-md focus:ring focus:ring-green-300 focus:outline-none"
-          placeholder="Course Description"
-          type="text"
-          name="description"
-          value={courseData.description}
-          onChange={handleInputChange}
-          required
-        />
-      </div>
-  
-      {/* Category and Additional Info */}
-      <div className="flex flex-col sm:flex-row gap-6">
-        <select
-          className="p-4 border border-gray-300 w-full sm:w-1/2 rounded-md focus:ring focus:ring-green-300 focus:outline-none"
-          name="categories"
-          value={courseData.categories}
-          onChange={handleInputChange}
-          required
-        >
-          <option value="" disabled>
-            Select Category
-          </option>
-          <option value="programming">Programming</option>
-          <option value="design">Design</option>
-          <option value="marketing">Marketing</option>
-        </select>
-        <input
-          className="p-4 border border-gray-300 w-full sm:w-1/2 rounded-md focus:ring focus:ring-green-300 focus:outline-none"
-          placeholder="Additional Info"
-          type="text"
-          name="additionalInfo"
-          value={courseData.additionalInfo}
-          onChange={handleInputChange}
-          required
-        />
-      </div>
-  
-      {/* Image Upload and Preview */}
-      <div className="flex flex-col sm:flex-row gap-6">
-        <div className="w-full sm:w-1/2">
-          <label className="block text-sm font-medium text-gray-700 mb-2">Upload Image</label>
+    <div className="max-w-4xl mx-auto bg-white shadow-2xl rounded-lg p-8 transform transition-all hover:shadow-3xl hover:scale-105">
+      <h2 className="text-4xl font-bold text-center text-gray-800 mb-10 border-b-4 border-green-500 pb-4">
+        Add New Course
+      </h2>
+
+      <form onSubmit={handleCourse} className="space-y-8">
+        {/* Title and Description */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Course Title</label>
+            <input
+              className="p-4 border border-gray-300 w-full rounded-md focus:ring-2 focus:ring-green-300 focus:outline-none transition-all"
+              placeholder="Course Title"
+              type="text"
+              name="title"
+              value={courseData.title}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Course Description</label>
+            <input
+              className="p-4 border border-gray-300 w-full rounded-md focus:ring-2 focus:ring-green-300 focus:outline-none transition-all"
+              placeholder="Course Description"
+              type="text"
+              name="description"
+              value={courseData.description}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+        </div>
+
+        {/* Category and Additional Info */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+            <select
+              className="p-4 border border-gray-300 w-full rounded-md focus:ring-2 focus:ring-green-300 focus:outline-none transition-all"
+              name="categories"
+              value={courseData.categories}
+              onChange={handleInputChange}
+              required
+            >
+              <option value="" disabled>
+                Select Category
+              </option>
+              <option value="programming">Programming</option>
+              <option value="design">Design</option>
+              <option value="marketing">Marketing</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Additional Info</label>
+            <input
+              className="p-4 border border-gray-300 w-full rounded-md focus:ring-2 focus:ring-green-300 focus:outline-none transition-all"
+              placeholder="Additional Info"
+              type="text"
+              name="additionalInfo"
+              value={courseData.additionalInfo}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+        </div>
+
+        {/* Course Summary Video Link */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Course Summary Video Link</label>
           <input
-            className="p-4 border border-gray-300 w-full rounded-md focus:ring focus:ring-green-300 focus:outline-none"
-            type="file"
-            name="image"
-            accept="image/*"
-            onChange={handleImageChange}
+            className="p-4 border border-gray-300 w-full rounded-md focus:ring-2 focus:ring-green-300 focus:outline-none transition-all"
+            placeholder="Enter the video link for course summary"
+            type="url"
+            name="courseSummaryVideo"
+            value={courseData.courseSummaryVideo}
+            onChange={handleInputChange}
             required
           />
         </div>
-  
-        {/* Image Preview */}
-        <div className="w-full sm:w-1/2">
-          <label className="block text-sm font-medium text-gray-700 mb-2">Preview</label>
-          <div
-            className={`border border-gray-300 rounded-md h-40 flex items-center justify-center ${
-              imagePreview ? 'shadow-md' : 'bg-gray-100'
-            }`}
-          >
-            {imagePreview ? (
-              <img
-                src={imagePreview}
-                alt="Uploaded Preview"
-                className="h-full w-full object-cover rounded-md"
-              />
-            ) : (
-              <span className="text-gray-400">No image uploaded</span>
-            )}
+
+        {/* Image Upload and Preview */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Upload Image</label>
+            <input
+              className="p-4 border border-gray-300 w-full rounded-md focus:ring-2 focus:ring-green-300 focus:outline-none transition-all"
+              type="file"
+              name="image"
+              accept="image/*"
+              onChange={handleImageChange}
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Image Preview</label>
+            <div
+              className={`border border-gray-300 rounded-md h-40 flex items-center justify-center ${
+                imagePreview ? 'shadow-md' : 'bg-gray-100'
+              }`}
+            >
+              {imagePreview ? (
+                <img
+                  src={imagePreview}
+                  alt="Uploaded Preview"
+                  className="h-full w-full object-cover rounded-md"
+                />
+              ) : (
+                <span className="text-gray-400">No image uploaded</span>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-  
-      {/* Rating */}
-      <div className="flex flex-col sm:flex-row gap-6">
-        <input
-          className="p-4 border border-gray-300 w-full sm:w-1/2 rounded-md focus:ring focus:ring-green-300 focus:outline-none"
-          type="number"
-          name="rating"
-          value={courseData.rating}
-          onChange={handleInputChange}
-          placeholder="Enter rating (1-5)"
-          min="1"
-          max="5"
-          required
-        />
-        <input
-          className="p-4 border border-gray-300 w-full sm:w-1/2 rounded-md focus:ring focus:ring-green-300 focus:outline-none"
-          placeholder="Course URL"
-          type="url"
-          name="courseURL"
-          value={courseData.courseURL}
-          onChange={handleInputChange}
-          required
-        />
-      </div>
-  
-      {/* Submit Button */}
-      <button
-        className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-4 rounded-md transition duration-200 focus:outline-none focus:ring focus:ring-green-300"
-        type="submit"
-      >
-        Submit Course
-      </button>
-    </form>
-  
-    {/* Upload Status */}
-    {uploadStatus && (
-      <p className="mt-6 text-center text-sm font-medium text-red-500">{uploadStatus}</p>
-    )}
-  </div>
-  
 
+        {/* Rating and Course URL */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Rating</label>
+            <input
+              className="p-4 border border-gray-300 w-full rounded-md focus:ring-2 focus:ring-green-300 focus:outline-none transition-all"
+              type="number"
+              name="rating"
+              value={courseData.rating}
+              onChange={handleInputChange}
+              placeholder="Enter rating (1-5)"
+              min="1"
+              max="5"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Course URL</label>
+            <input
+              className="p-4 border border-gray-300 w-full rounded-md focus:ring-2 focus:ring-green-300 focus:outline-none transition-all"
+              placeholder="Course URL"
+              type="url"
+              name="courseURL"
+              value={courseData.courseURL}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+        </div>
+
+        {/* Submit Button */}
+        <button
+          className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-4 rounded-md transition duration-200 focus:outline-none focus:ring-2 focus:ring-green-300 transform hover:scale-105"
+          type="submit"
+        >
+          Submit Course
+        </button>
+      </form>
+
+      {/* Upload Status */}
+      {uploadStatus && (
+        <p className="mt-6 text-center text-sm font-medium text-red-500">{uploadStatus}</p>
+      )}
+    </div>
   );
 };
 
-export default CoursesAddField;
+export default CoursesAddFieldWithSummary;

@@ -56,15 +56,34 @@ const CoursesAddFieldWithSummary: React.FC = () => {
   const uploadImageToImgBB = async (image: File): Promise<string> => {
     const formData = new FormData();
     formData.append('image', image);
-    const { data } = await axios.post(
-      `https://api.imgbb.com/1/upload?expiration=600&key=400a20a4420cbd865f5a97bb6cd5db43`,
-      formData
-    );
-    return data.data.url;
+
+    try {
+      const response = await axios.post(
+        `https://api.imgbb.com/1/upload?key=4bc01cc94bda9032ec20e7c1f7b31d85`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+
+      if (response.data && response.data.data && response.data.data.url) {
+        return response.data.data.url; // Return the uploaded image URL
+      } else {
+        throw new Error('Invalid response from ImgBB');
+      }
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      throw new Error('Image upload failed');
+    }
   };
 
   const handleCourse = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // const imageput = (e.target as HTMLFormElement).image.value;
+
 
     if (!imageFile) {
       setUploadStatus('Please select an image to upload.');

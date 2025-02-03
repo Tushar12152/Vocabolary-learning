@@ -79,6 +79,11 @@ const CoursesAddFieldWithSummary: React.FC = () => {
     }
   };
 
+
+
+
+  
+
   const handleCourse = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 

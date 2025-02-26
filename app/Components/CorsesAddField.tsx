@@ -61,7 +61,7 @@ const CoursesAddFieldWithSummary: React.FC = () => {
       const response = await axios.post(
         `https://api.imgbb.com/1/upload?key=4bc01cc94bda9032ec20e7c1f7b31d85`,
         formData,
-        {
+        { 
           headers: {
             'Content-Type': 'multipart/form-data',
           },

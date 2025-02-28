@@ -19,7 +19,7 @@ const features: Feature[] = [
 
 // FeatureCard component with TypeScript props
 const FeatureCard: React.FC<Feature> = ({ icon, title }) => (
-  <div className="bg-white shadow-md p-6 rounded-2xl flex flex-col items-center text-center hover:shadow-lg transition">
+  <div className="bg-gray-100 shadow-md p-6 rounded-2xl flex flex-col items-center text-center hover:shadow-lg transition">
     <div className="text-green-500 text-4xl bg-green-100 p-3 rounded-full">{icon}</div>
     <h3 className="text-xl font-semibold mt-4">{title}</h3>
     <p className="text-gray-500 mt-2 text-sm">
@@ -31,14 +31,24 @@ const FeatureCard: React.FC<Feature> = ({ icon, title }) => (
 // FeaturesSection component
 const FeaturesSection: React.FC = () => {
   return (
-    <section className="py-16 px-8 bg-gray-50">
+    <section className="py-16 px-8 w-[80%] bg-gray-50">
+
+
+
+
       <div className="text-center mb-10">
-        <h5 className="text-green-500 font-semibold uppercase">Why Choose Edusion</h5>
-        <h2 className="text-4xl font-bold mt-2">
-          Find The <span className="text-green-500">Best Features</span> Of Edusion
-        </h2>
+      <div className="flex items-center gap-2 ml-1">
+          <p className="text-green-500 text-lg">Why Choose Edusion</p>
+          <span className="block w-32 border-b-2 border-green-500"></span>
+        </div>
+        <h1 className="text-5xl font-bold text-blue-900 mt-3">
+        Find The Best Features{" "}
+          <span className="text-green-500 border-b-2 border-green-500">
+          Of Edusion
+          </span>
+        </h1>
       </div>
-      <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-6 max-w-6xl mx-auto">
+      <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-6 max-w-[80%] mx-auto">
         {features.map((feature, index) => (
           <FeatureCard key={index} icon={feature.icon} title={feature.title} />
         ))}

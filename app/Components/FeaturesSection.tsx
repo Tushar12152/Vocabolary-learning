@@ -31,17 +31,17 @@ const FeatureCard: React.FC<Feature> = ({ icon, title }) => (
 // FeaturesSection component
 const FeaturesSection: React.FC = () => {
   return (
-    <section className="py-16 px-8 w-[80%] bg-gray-50">
+    <section className="py-16 px-8 bg-gray-50">
 
 
 
 
-      <div className="text-center mb-10">
+      <div className="text-center mb-10  w-[80%] mx auto">
       <div className="flex items-center gap-2 ml-1">
-          <p className="text-green-500 text-lg">Why Choose Edusion</p>
+          <p className="text-green-500 text-lg ml-44">Why Choose Edusion</p>
           <span className="block w-32 border-b-2 border-green-500"></span>
         </div>
-        <h1 className="text-5xl font-bold text-blue-900 mt-3">
+        <h1 className="text-5xl font-bold text-blue-900 mt-3 mr-72">
         Find The Best Features{" "}
           <span className="text-green-500 border-b-2 border-green-500">
           Of Edusion
